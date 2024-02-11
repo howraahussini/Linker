@@ -1,0 +1,66 @@
+{% extends 'registration/base_registration.html' %}
+{% load static %}
+
+{% block title %} تسجيل الدخول {% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{% static 'registration/images/login.gif' %}" alt="Image" class="img-fluid">
+            </div>
+            <div class="col-md-6 contents">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="mb-4">
+                            
+                            <a href="{% url 'web:home' %}" class="navbar-brand"><img src="{% static 'web/img/logo/logo.svg' %}"></a>
+                            <h3>تسجيل الدخول</h3>
+                            
+                        </div>
+                        <br />
+                        <form method="post" action="{% url 'accounts:login' %}">
+                            {% csrf_token %}
+                            <div class="form-group first">
+                                <label for="username">ايميل</label>
+                                <input type="text" name="username" class="form-control" id="username">
+                            </div>
+                            <div class="form-group last mb-4">
+                                <label for="password">كلمة المرور</label>
+                                <input type="password" name="password" class="form-control" id="password">
+
+                            </div>
+
+                            <div class="d-flex mb-5 align-items-center">
+                                <label class="control control--checkbox mb-0"><span class="caption">Remember me</span>
+                                    <input type="checkbox" checked="checked" />
+                                    <div class="control__indicator"></div>
+                                </label>
+                                <span class="ml-auto"><a href="{% url 'password_reset' %}" class="forgot-pass">نسيت كلمة السر؟</a></span>
+                            </div>
+                            {% if form.non_field_errors %}
+                            <p class="text-center">{{ form.non_field_errors }}</p>
+                            {% endif %}
+                            <span class="d-flex justify-content-center form-control mb-3">{{ form.captcha }}</span>
+                            <input type="submit" value="دخول" class="btn btn-block btn-primary">
+
+                            <p class="font-weight-bold"> ؟ <a href="{% url 'accounts:signup' %}">کن عضوا الآن</a> ^_^ Linkerليس عضوا في </p>
+
+                            <span class="d-block text-center my-4 text-muted">_____ أو _____</span>
+                            <div class="social-login">
+                                <a href="#" class="google">
+                                    <span class="icon-google mr-3"> الدخول مع</span>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'panel/base_panel.html' %}
+{% load static %}
+
+
+{% block title %}المعلومات الأساسية للرابط{% endblock %}
+
+{% block content %}
+
+<div class="container-inner-header">
+    <a class="back-button" href="{% url 'panel:modules_page' link_name=link_name.name %}">
+        <span class="icon" title="عودة"><i class="mai-arrow-forward"></i></span>
+        <span class="text">المعلومات الأساسية للرابط</span>
+    </a>
+</div>
+
+<div class="container-inner">
+    <form class="flex-fill px-4 py-3" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="py-3 d-flex align-content-center align-items-center  flex-column flex-wrap">
+            <div class="avatar-img" style="width: 110px; height: 110px;">
+                <img src="{{ profile.image.url }}" alt="user_avatar" />
+            </div>
+            <input class="small" style="width: 88px;" type="file" name="image" placeholder="انتخب صورتك" />
+        </div>
+        <div class="py-3">
+            <input class="form-control text-right" type="text" name="username" placeholder="اكتب اسمك" value="{{ profile.username }}" />
+        </div>
+        <div class="py-3">
+            <textarea rows="4" class="form-control text-right p-3" name="biography" placeholder="اكتب شعارك هنا">{{ profile.biography }}</textarea>
+        </div>
+        <button class="btn btn-outline rounded-pill" type="submit">حفظ التغييرات</button>
+    </form>
+</div>
+{% endblock %}

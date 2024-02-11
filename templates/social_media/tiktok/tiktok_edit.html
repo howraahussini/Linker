@@ -1,0 +1,29 @@
+{% extends 'panel/base_panel.html' %}
+{% load static %}
+
+
+{% block title %}تحرير تیک تاک{% endblock %}
+
+{% block content %}
+
+<div class="container-inner-header">
+    <a class="back-button" href="{% url 'social:social' link_name=link_name.name %}">
+        <span class="icon" title="عودة"><i class="mai-arrow-forward"></i></span>
+        <span class="text"> تحرير تیک تاک </span>
+    </a>
+</div>
+
+<div class="container-inner">
+    <form class="flex-fill px-4 py-3" method="post">
+        {% csrf_token %}
+        <div class="py-3">
+            <input class="form-control text-right" type="text" name="title" placeholder="اكتب العنوان هنا مثلا: تابعونا على تیک تاک" />
+        </div>
+        <div class="py-3">
+            <input class="form-control text-left" type="text" name="link" placeholder="ضع رابط تیک تاک هنا" />
+        </div>
+        <button class="btn btn-outline rounded-pill" type="submit">حفظ</button>
+    </form>
+</div>
+    
+{% endblock %}

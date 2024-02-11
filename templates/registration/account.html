@@ -1,0 +1,35 @@
+{% extends 'panel/base_panel.html' %}
+{% load static %}
+
+
+{% block title %}حسابي{% endblock %}
+
+{% block content %}
+
+<div class="container-inner-header">
+    <a class="back-button" href="{% url 'panel:modules_page' link_name=link_name.name %}">
+        <span class="icon" title="عودة"><i class="mai-arrow-forward"></i></span>
+        <span class="text">حسابي</span>
+    </a>
+</div>
+
+<div class="container-inner">
+    <form class="flex-fill px-4 py-3" method="post">
+        {% csrf_token %}
+        <div class="py-3">
+            <input class="form-control text-right" type="text" name="first_name" placeholder="الاسم" value="{{ account.user.email }}" readonly>
+        </div>
+        <div class="py-3">
+            <input class="form-control text-right" type="text" name="first_name" placeholder="الاسم" value="{{ account.first_name }}" >
+        </div>
+        <div class="py-3">
+            <input class="form-control text-right" type="text" name="last_name" placeholder="القب" value="{{ account.last_name }}"/>
+        </div>
+        <span class="d-flex justify-content-between">
+            <a class="btn btn-primary rounded-pill" href="{% url 'password_change' %}">تغيير كلمة المرور</a>
+            <button class="btn btn-outline rounded-pill" type="submit">حفظ</button>
+        </span>
+    </form>
+</div>
+    
+{% endblock %}

@@ -1,0 +1,19 @@
+# Gneral
+Django >3.2,<3.3
+pillow
+
+# restframework API 
+djangorestframework
+django_filter
+markdown  
+
+# documentation 
+drf-spectacular
+drf-spectacular[sidecar]
+
+# Template Module
+humanize
+
+# security
+django-simple-captcha
+django-multi-captcha-admin

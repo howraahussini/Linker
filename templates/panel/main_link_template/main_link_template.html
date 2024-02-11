@@ -1,0 +1,81 @@
+{% extends 'panel/base_panel.html' %}
+{% load static %}
+
+{% block title %}لون القالب {% endblock %}
+
+{% block content %}
+    <div class="container-inner-header">
+        <a class="back-button" href="{% url 'panel:modules_page' link_name=link_name.name %}">
+        <span class="icon" title="عودة"><i class="mai-arrow-forward"></i></span>
+        <span class="text">لون القالب</span>
+        </a>
+    </div>
+
+    
+    <div class="container-inner d-block">
+        <div class="row justify-content-around m-0">
+            {% for theme in templates %}
+            <div class="col-lg-4 m-4 ">
+                <div class="mobile-inner-block" >
+                    <div class="mobile-inner-content pb-5 overflow-hidden position-relative" style="background-image: url({{ theme.background.url }}); border-radius: 15px" id="container">
+                        <div class="mobile-profile" style="background-color: {{ theme.profile_block }}" id="profile">
+                            <div class="avatar" style="height: 70px; width: 70px;">
+                            </div>
+                            <div class="username" style="background-color: white; height: 10px; width: 5rem; border-radius: 5px;"></div>
+                            <div class="bio" style="background-color: white; height: 10px; width: 3rem; border-radius: 5px;"></div>
+                        </div>
+                        <div class="link-block" style="background-color: {{ theme.url_block }}; margin:1.7rem auto 0" id="block">
+                            <a class="link" style="min-height: 2.5rem;">
+                                <span class="d-flex flex-nowrap align-items-center">
+                                    <span class="text-right"></span>
+                                    <span class="icon"> </span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="link-block" style="background-color: {{ theme.url_block }}; margin:1.7rem auto 0" id="block">
+                            <a class="link" style="min-height: 2.5rem;">
+                                <span class="d-flex flex-nowrap align-items-center">
+                                    <span class="text-right"></span>
+                                    <span class="icon">
+                                    </span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <span style="color: rgb(134, 155, 171);
+                    text-align: right; 
+                    font-size: 15px;
+                    font-weight: 600; 
+                    line-height: normal; 
+                    position: absolute;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 90%;
+                    margin: 10px auto 0;">
+                    {{ theme.template_name }}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+
+        
+        <form class="flex-fill px-4 py-3" method="post" action="{% url 'panel:main_link_template' link_name=link_name.name  pk=link_name.pk  %}">
+            <p style="direction: rtl; font-size: 21px; font-weight: 600; margin-top: 4rem; margin-bottom: 4rem;">اختر اسم القالب الذي تريده في المربع أدناه واحفظه، ثم سيتم تطبيق القالب الذي تفضله على الصفحة الرئيسية.</p>
+            {% csrf_token %}
+            <div class="d-flex justify-content-between flex-row-reverse">
+                <select class="select" name="template">
+                    <option>----------</option>
+                    {% for theme in templates %}
+                    <option value="{{ theme.id }}" selected>
+                        {{ theme.template_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-outline rounded-pill" type="submit">حفظ</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+

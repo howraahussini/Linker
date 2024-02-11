@@ -1,0 +1,71 @@
+{% extends 'panel/base_panel.html' %}
+{% load static %}
+
+{% block title %}لوحة التحكم {% endblock %}
+
+
+{% block content %}
+
+<div class="container-inner-header">
+    <a class="back-button" href="{% url 'dashboard:dashboard' %}">
+        <span class="icon" title="عودة"><i class="mai-arrow-forward"></i></span>
+        <span class="text">لوحة التحكم </span>
+    </a>
+</div>
+
+<div class="container-inner">
+
+    <a class="item-inner" href="{% url   'panel:profile' link_name=link_name.name   pk=profile.id %}">
+        <span class="icon"><i class="mai-pencil"></i></span>
+        <span class="text mr-3">
+            <span>المعلومات الأساسية للرابط</span>
+            <span style="color: rgb(134, 155, 171); font-size: 12px !important;">حدد الشعار والاسم والصورة التي
+                تريدها</span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'panel:text'  link_name=link_name.name %}">
+        <span class="icon"><i class="mai-text"></i></span>
+        <span class="text mr-3">
+            <span>نص</span>
+            <span style="color: rgb(134, 155, 171); font-size: 12px !important;">أي نص مثل: عن نفسك وعن عملك</span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'panel:link'  link_name=link_name.name %}">
+        <span class="icon"><i class="mai-link"></i></span>
+        <span class="text mr-3">
+            <span>روابط</span>
+            <span style="color: rgb(134, 155, 171); font-size: 12px !important;">أضف أي روابط لديك</span>
+        </span>
+    </a>
+
+
+    <a class="item-inner" href="{% url 'social:social' link_name=link_name.name %}">
+        <span class="icon"><i class="mai-share-social"></i></span>
+        <span class="text mr-3">
+            <span>طرق التواصل</span>
+            <span style="color: rgb(134, 155, 171); font-size: 12px !important;">التواصل مع الجمهور من خلال شبكات
+                التواصل الاجتماعي والمكالمات</span>
+        </span>
+    </a>
+
+
+    <a class="item-inner" href="{% url   'panel:gallery'  link_name=link_name.name %}">
+        <span class="icon"><i class="mai-images-outline"></i></span>
+        <span class="text mr-3">
+            <span>الصور</span>
+            <span style="color: rgb(134, 155, 171); font-size: 12px !important;">ضع صورتك ومحفظة أعمالك</span>
+        </span>
+    </a>
+
+
+    <a class="item-inner" href="{% url   'panel:faq_user'  link_name=link_name.name %}">
+        <span class="icon"><i class="mai-help"></i></span>
+        <span class="text mr-3">
+            <span>أسئلة متكررة</span>
+            <span style="color: rgb(134, 155, 171); font-size: 12px !important;">أجب عن الأسئلة المتداولة لجمهورك</span>
+        </span>
+    </a>
+</div>
+{% endblock %}

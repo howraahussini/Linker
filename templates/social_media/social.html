@@ -1,0 +1,98 @@
+{% extends 'panel/base_panel.html' %}
+{% load static %}
+
+{% block title %}طرق التواصل{% endblock %}
+
+
+{% block content %}
+
+<div class="container-inner-header">
+    <a class="back-button" href="{% url 'panel:modules_page' link_name=link_name.name %}">
+        <span class="icon" title="عودة"><i class="mai-arrow-forward"></i></span>
+        <span class="text"> طرق التواصل </span>
+    </a>
+</div>
+
+<div class="container-inner">
+
+    <a class="item-inner" href="{% url   'social:email' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/gmail.png' %}" /></span>
+        <span class="text mr-3">
+            <span>Email | بریدالالکترونی</span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'social:phone' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/phone.png' %}" /></span>
+        <span class="text mr-3">
+            <span>Phone | هاتف </span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'social:instagram' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/instagram.png' %}" /></span>
+        <span class="text mr-3">
+            <span>Instagram | اینستاگرام </span>
+        </span>
+    </a>
+
+
+    <a class="item-inner" href="{% url   'social:telegram' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/telegram.png' %}" /></span>
+        <span class="text mr-3">
+            <span>Telegram | تلگرام</span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'social:whatsapp' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/whatsapp.png' %}" /></span>
+        <span class="text mr-3">
+            <span>Whatsapp | واتساپ</span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'social:youtube' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/youtube.png' %}" /></span>
+        <span class="text mr-3">
+            <span>Youtube | یوتیوب</span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'social:facebook' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/facebook.png' %}" /></span>
+        <span class="text mr-3">
+            <span>Facebook | فیسبوک</span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'social:x' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/x.png' %}" /></span>
+        <span class="text mr-3">
+            <span>X | اکس</span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'social:linkedin' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/linkedin.png' %}" /></span>
+        <span class="text mr-3">
+            <span>Linkedin | لینکدین</span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'social:snapchat' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/snapchat.png' %}" /></span>
+        <span class="text mr-3">
+            <span>Snapchat | سناپ چت</span>
+        </span>
+    </a>
+
+    <a class="item-inner" href="{% url   'social:tiktok' link_name=link_name.name  %}">
+        <span class="img"><img src="{% static 'web/img/social_media/tiktok.png' %}" /></span>
+        <span class="text mr-3">
+            <span>Tiktok | تیک تاک</span>
+        </span>
+    </a>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'web/base_web.html' %}
+{% load static %}
+
+{% block title %} رييسيه {% endblock %}
+
+{% block row %}
+
+<div class="row align-items-center h-100 flex-row-reverse">
+  <div class="col-lg-6 py-5 wow fadeInUp">
+    <h1 class="mb-4">هل تبحث عن أفضل طريقة للتواصل مع عملائك؟</h1>
+    <h2 class="mb-4">!تحتاج فقط إلى إنشاء رابط واحد</h2>
+    <p class="text-lg mb-5">للبيع، تحتاج إلى التواصل مع عملائك</p>
+  </div>
+  <div class="col-lg-6 py-3 wow zoomIn">
+    <div class="img-place">
+      <img src="{% static 'web/img/images/Marketing.gif' %}" alt="marketing_image" />
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+<main>
+  <div class="page-section features">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4 py-3 wow fadeInUp">
+          <div class="d-flex flex-row">
+            <div class="img-fluid mr-3">
+              <img src="{% static 'web/img/images/Account.gif' %}" alt="">
+            </div>
+            <div>
+              <h5>Linker أنشئ حسابًا في </h5>
+              <h6>انضم إلينا وابدأ</h6>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 py-3 wow fadeInUp">
+          <div class="d-flex flex-row">
+            <div class="img-fluid mr-3">
+              <img src="{% static 'web/img/images/customization.gif' %}" alt="">
+            </div>
+            <div>
+              <h5>إضافة رابط</h5>
+              <h6>أضف الروابط والمحتوى الذي تحتاجه.</h6>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 py-3 wow fadeInUp">
+          <div class="d-flex flex-row">
+            <div class="img-fluid mr-3">
+              <img src="{% static 'web/img/images/bio.gif' %}" alt="">
+            </div>
+            <div>
+              <h5>ضع الرابط في البايو</h5>
+              <h6>Instagram ضع الرابط الخاص بك في بايو على</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- .container -->
+  </div> <!-- .page-section -->
+
+  <div class="page-section border-top">
+    <div class="container">
+      <div class="text-center wow fadeInUp">
+        <div class="subhead">مدونتنا</div>
+        <h2 class="title-section">إقرأ آخر  <span class="marked">أخبارنا</span></h2>
+        <div class="divider mx-auto"></div>
+      </div>
+      <div class="row my-5">
+
+
+        {% for post in last_post %}
+        <div class="col-md-6 col-lg-4 py-3">
+          <div class="card-blog">
+            <div class="header">
+              <div class="avatar">
+                <img src="{{ post.image.url }}" alt="">
+              </div>
+              <div class="entry-footer">
+                <a href="#" class="post-date">{{ post.created_date }}</a>
+                <div class="post-author">{{ post.author.first_name }} {{ post.author.last_name }}</div>
+              </div>
+              <div class="divider w-25"></div>
+            </div>
+            <div class="body">
+              <div class="post-title"><a href="{% url 'blog:post_single' pk=post.pk %}">{{ post.title }}</a></div>
+              <div class="post-excerpt">{{ post.content|truncatewords:30 }}</div>
+            </div>
+            <div class="footer">
+              <a href="{% url 'blog:post_single' pk=post.pk %}">قراءة المزيد<span
+                  class="mai-chevron-forward text-sm"></span></a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+
+      </div>
+
+      <div class="text-center">
+        <a href="{% url 'blog:blog' %}" class="btn btn-outline-primary rounded-pill">Discover More</a>
+      </div>
+
+    </div> <!-- .container -->
+  </div> <!-- .page-section -->
+</main>
+
+{% endblock %}

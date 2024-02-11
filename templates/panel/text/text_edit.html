@@ -1,0 +1,25 @@
+{% extends 'panel/base_panel.html' %}
+{% load static %}
+
+
+{% block title %}تحریراانص{% endblock %}
+
+{% block content %}
+
+<div class="container-inner-header">
+    <a class="back-button" href="{% url 'panel:modules_page' link_name=link_name.name %}">
+        <span class="icon" title="عودة"><i class="mai-arrow-forward"></i></span>
+        <span class="text"> تحریراانص </span>
+    </a>
+</div>
+
+<div class="container-inner">
+    <form class="flex-fill px-4 py-3" method="post">
+        {% csrf_token %}
+        <div class="py-3">
+            <textarea rows="4" class="form-control text-right p-3" name="text" placeholder="أدخل النص هنا" >{{ text.text }}</textarea>
+        </div>
+        <button class="btn btn-outline rounded-pill" type="submit">حفظ</button>
+    </form>
+</div>
+{% endblock %}

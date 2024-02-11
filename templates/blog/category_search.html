@@ -1,0 +1,81 @@
+{% extends 'web/base_web.html' %}
+{% load static %}
+
+{% block title %} {{ cat }} {% endblock %}
+
+
+
+{% block content %}
+
+<main>
+
+  <div class="page-section pt-0">
+    <div class="container justify-content-center">
+      <div class="divider w-100"></div>
+      <div class="row mt-0">
+
+        {% for post in posts %}
+        <div class="col-md-6 col-lg-4 py-3">
+          <div class="card-blog">
+            <div class="header">
+              <div class="avatar">
+                <img src="{{ post.image.url }}" alt="">
+              </div>
+              <div class="entry-footer">
+                <a href="#" class="post-date">{{ post.created_date }}</a>
+                <div class="post-author">{{ post.author.first_name }} {{ post.author.last_name }}</div>
+              </div>
+              <div class="divider w-25"></div>
+            </div>
+            <div class="body">
+              <div class="post-title"><a href="{% url 'blog:post_single' pk=post.pk %}">{{ post.title }}</a></div>
+              <div class="post-excerpt">{{ post.content|truncatewords:30 }}</div>
+            </div>
+            <div class="footer">
+              <a href="{% url 'blog:post_single' pk=post.pk %}">قراءة المزيد<span
+                  class="mai-chevron-forward text-sm"></span></a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <div class="col-12 mt-5">
+        <nav aria-label="Page Navigation">
+          <ul class="pagination justify-content-center">
+
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for i in page_obj.paginator.page_range %}
+            {% if page_obj == i %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+              <span>(current)</span>
+            </li>
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+              {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+              {% endif %}
+              {% endfor %}
+
+              {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+
+  </div>
+  </div>
+</main>
+
+{% endblock %}

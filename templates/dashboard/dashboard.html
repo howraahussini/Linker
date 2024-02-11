@@ -1,0 +1,93 @@
+{% extends 'web/base_web.html' %}
+{% load static %}
+
+
+{% block title %} لوحة التحكم الرئيسية {% endblock %}
+
+
+
+{% block row %}
+
+<div class="row align-items-center h-100">
+    <div class="col-lg-6 py-5 wow fadeInUp">
+        <h1 class="mb-4"> يمكنك إنشاء أكثر من رابط بالضغط على إضافة رابط </h1>
+        <h2 class="mb-4">بالضغط على تعديل يمكنك إنشاء صفحة خاصة لكل رابط حسب ذوقك</h2>
+        <h2 class="mb-4"> من خلال النقر على مشاهدة ، يمكنك رؤية الصفحة التي قمت بإنشائها</h2>
+    </div>
+    <div class="col-lg-6 py-3 wow zoomIn">
+        <div class="img-place">
+            <img src="{% static 'web/img/images/link.gif' %}" alt="marketing_image" />
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-section border-top">
+    <div class="container d-flex flex-lg-row-reverse">
+        <div class="card-main-link my-5 row d-flex  heartBeat" style="background-color: #ffde4d;">
+            <div class="body">
+            <div class="header">
+                <div class="avatar" style="cursor: pointer;">
+                    <img src="{% static 'web/img/icon/add_link.svg' %}" alt="add_link" onclick="showMask()">
+                </div>
+            </div>
+                <span class="name">اإضافة رابط</span>
+            </div>
+            <div class="mask" id="mask">
+                <div class="base-form">
+                    <form class="form-add" method="post">
+                        {% csrf_token %}
+                        <input class="rounded-pill m-2" type="text" name="name" placeholder="مثلا:حورا"/>
+                        <p>{{ form.text_help }}</p>
+                        <button class="btn btn-danger rounded-pill m-1" onclick="hideMask()">لغو</button>
+                        <button type="submit" class="btn btn-primary rounded-pill m-1">تم</button>
+                        {% if form.non_field_errors %}
+		                <p class="text-center" >{{ form.non_field_errors }}</p>
+		                {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% for pro in profile %}
+        <div class="card-main-link my-5 row" >
+            <div class="header">
+                <div class="avatar">
+                    <img src="{{ pro.image.url }}" />
+                </div>
+            </div>
+            <div class="body">
+                <span class="name">{{ pro.username }}</span>
+                <div class="link-box">
+                    <input type="text" class="link-box-input" value="http://127.0.0.1:8000/Link/{{ pro.link_id.name }}" id="copy_{{ pro.link_id_id  }}"  readonly />
+                    <button class="link-box-button" onclick="copyLink('{{ pro.link_id_id  }}')">
+                        <i class="mai-copy-outline"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="footer">
+                <a href="" class="btn border-danger mai-trash rounded-pill" style="color: red;" onclick="showConfirm('{{ pro.link_id_id  }}')"></a>
+                <a href="{% url 'dashboard:main_link' pro.link_id.name %}" target="_blank" class="btn btn-primary rounded-pill">مشاهدة</a>
+                <a href="{% url 'panel:modules_page' pro.link_id.name %}" class="btn btn-outline rounded-pill">التعديل</a>
+            </div>
+            <div class="mask" id="mask_{{ pro.link_id_id  }}" style="display: none;">
+                <div class="base-form">
+                    <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'dashboard:main_link_delete' pk=pro.link_id_id %}">
+                        {% csrf_token %}
+                        <p class="text-xl m-0">؟ {{ pro.link_id.name }} هل تريد حذف </p>
+                        <div>
+                            <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                            <a class="btn btn-primary rounded-pill m-1" onclick="cancelDeletion('{{ pro.link_id_id  }}')">لغو</a>
+                        </div>    
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

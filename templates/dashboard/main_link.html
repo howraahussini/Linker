@@ -1,0 +1,770 @@
+{% load static %}
+{% load filters %}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="copyright" content="MACode ID, https://macodeid.com">
+
+    <title>{% block title %} {% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'web/vendor/animate/animate.css' %}">
+
+    <link rel="stylesheet" href="{% static 'web/css/bootstrap.css' %}">
+
+    <link rel="stylesheet" href="{% static 'web/css/maicons.css' %}">
+
+    <link rel="stylesheet" href="{% static 'web/vendor/owl-carousel/css/owl.carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'web/css/theme.css' %}">
+</head>
+   
+
+<body>
+   
+    <div class="mobile-inner-block">
+        <div class="mobile-inner-content pb-5" style="background-image: url({{link_name.template.background.url}});" id="container">
+            
+            <div class="mobile-profile"  style="background-color: {{ link_name.template.profile_block }}" id="profile">
+                <div class="avatar">
+                    <img src="{{ profile.image.url }}" alt="profile" />
+                </div>
+                <div class="username">{{ profile.username }}</div>
+                <div class="bio">{{ profile.biography }}</div>
+            </div>
+
+
+            
+    {% for model in all_models|dictsort:'created_date' %}
+
+        <!-- link section -->
+
+        {% if model|get_model_name == "Link" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            
+                <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'panel:link_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="linkShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="link_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'panel:link_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="linkCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block" style="background-color: {{ model.link_id.template.url_block }}" id="block">
+                <a class="link" href="{{ model.link }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right">{{ model.title }}</span>
+                        <span class="icon">
+                            <svg width="20" height="20" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 19">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M11.013 7.962a3.519 3.519 0 0 0-4.975 0l-3.554 3.554a3.518 3.518 0 0 0 4.975 4.975l.461-.46m-.461-4.515a3.518 3.518 0 0 0 4.975 0l3.553-3.554a3.518 3.518 0 0 0-4.974-4.975L10.3 3.7" />
+                            </svg>
+                        </span>
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- end link -->
+
+
+        <!-- email section -->
+
+        {% if model|get_model_name == "Email" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:email_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="emailShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="email_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:email_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.link }}"؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="emailCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block email">
+                <a class="link" href="mailto:{{ model.email }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/gmail.png' %}" alt="email">
+                        </span>
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- end email -->
+
+
+        <!-- phone section -->
+
+        {% if model|get_model_name == "Phone" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:phone_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="phoneShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="phone_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:phone_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="phoneCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+
+            <div class="link-block phone">
+                <a class="link" href="tel:{{ model.number }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/phone.png' %}" alt="phone">
+                        </span>
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- end phone -->
+
+
+        <!-- instagram section -->
+
+        {% if model|get_model_name == "Instagram" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:instagram_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="instagramShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="instagram_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:instagram_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="instagramCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+
+            <div class="link-block instagram">
+                <a class="link" href="{{ model.link }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/instagram.png' %}" alt="instagram">
+                        </span>
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- end instagram -->
+        
+
+        <!-- telegram section -->
+
+        {% if model|get_model_name == "Telegram" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:telegram_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="telegramShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="telegram_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:telegram_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="telegramCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block telegram">
+                <a class="link" href="{{ model.link }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/telegram.png' %}" alt="telegram">
+                        </span>
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- end telegram -->
+
+        
+        <!-- youtube section -->
+
+        {% if model|get_model_name == "Youtube" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:youtube_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="youtubeShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="youtube_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:youtube_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="youtubeCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block youtube">
+                <a class="link" href="{{ model.link }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/youtube.png' %}" alt="youtube" />
+                        </span>
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- end youtube -->
+    
+
+        <!-- whatsapp section -->
+
+        {% if model|get_model_name == "Whatsapp" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:whatsapp_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="whatsappShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="whatsapp_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:whatsapp_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="whatsappCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block whatsapp">
+                <a class="link" href="{{ model.link }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/whatsapp.png' %}" alt="whatsapp">
+                        </span>
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- end whatsapp -->
+
+        <!-- facebook section -->
+
+        {% if model|get_model_name == "Facebook" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:facebook_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="facebookShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="facebook_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:facebook_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="facebookCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block facebook">
+                <a class="link" href="{{ model.link }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/facebook.png' %}" alt="facebook">
+                        </span>
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- end facebook -->
+
+        <!-- x section -->
+
+        {% if model|get_model_name == "X" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:x_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="xShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="x_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:x_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="xCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block x">
+                <a class="link" href="{{ model.link }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/x.png' %}" alt="x">
+                        </span>
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- end x -->
+
+
+        <!-- linkedin section -->
+
+        {% if model|get_model_name == "Linkedin" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:linkedin_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="linkedinShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="linkedin_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:linkedin_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="linkedinCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block linkedin">
+                <a class="link" href="{{ model.link }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/linkedin.png' %}" alt="linkedin">
+                        </span>
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- end linkedin -->
+
+
+        <!-- snapchat section -->
+
+        {% if model|get_model_name == "Snapchat" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:snapchat_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="snapchatShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="snapchat_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:snapchat_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="snapchatCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block snapchat">
+                <a class="link" href="{{ model.link }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/snapchat.png' %}" alt="snapchat">
+                        </span>
+                    </span>
+                </a>
+            </div>
+
+        {% endif %}
+
+        <!-- end snapchat -->
+
+
+        <!-- tiktok section -->
+
+        {% if model|get_model_name == "Tiktok" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'social:tiktok_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="tiktokShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="tiktok_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'social:tiktok_delete' link_name=link_name.name   pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل تريد حذف "{{ model.title }}" ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="tiktokCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block tiktok">
+                <a class="link" href="{{ model.link }}" target="_blank">
+                    <span class="d-flex flex-nowrap align-items-center">
+                        <span class="text-right text-white">{{ model.title }}</span>
+                        <span class="icon">
+                            <img src="{% static 'web/img/social_media/tiktok.png' %}" alt="tiktok">
+                        </span>
+                    </span>
+                </a>
+            </div>
+            
+        {% endif %}
+
+        <!-- end tiktok -->
+
+
+        <!-- text section -->
+    
+        {% if model|get_model_name == "Text" %}
+        
+            <div class="link-block">
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+                <span class="span-m">
+                    <a class="icon-m" href="{% url 'panel:text_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                        <i class="mai-pencil"></i>
+                    </a>
+                   
+                    <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="textShowConfirm('{{ model.pk }}')">
+                        <i class="mai-trash"></i>
+                    </a>
+                    <div class="mask" id="text_{{ model.pk }}" style="display: none;">
+                        <div class="base-form">
+                            <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'panel:text_delete' link_name=link_name.name   pk=model.pk %}">
+                                {% csrf_token %}
+                                <p class="text-xl m-0" style="direction: rtl;"> هل ترید حذف هذا النص ؟</p>
+                                <div>
+                                    <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                    <a class="btn btn-primary rounded-pill m-1" onclick="textCancelDeletion('{{ model.pk  }}')">لغو</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </span>
+            {% endif %}
+            {% endif %}
+
+                <a class="link">
+                    <span class="text">
+                        <p class="text-center">
+                            <strong>{{ model.text }}</strong>
+                        </p>
+                    </span>
+                </a>
+            </div>
+            
+        {% endif %}
+        
+        <!-- end text -->
+        
+
+        <!-- gallery section -->
+
+        {% if model|get_model_name == "Gallery" %}
+
+            <div class="link-block">
+
+
+                {% if user.is_authenticated %}
+                {% if user.email == page_owner_email %}
+                <span class="span-m">
+                    <a class="icon-m" href="{% url 'panel:gallery_edit' link_name=link_name.name   pk=model.pk %}" title="تحرير" target="_blank">
+                        <i class="mai-pencil"></i>
+                    </a>
+
+                    <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="galleryShowConfirm('{{ model.pk }}')">
+                        <i class="mai-trash"></i>
+                    </a>
+                    <div class="mask" id="gallery_{{ model.pk }}" style="display: none;">
+                        <div class="base-form">
+                            <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'panel:gallery_delete' link_name=link_name.name   pk=model.pk %}">
+                                {% csrf_token %}
+                                <p class="text-xl m-0" style="direction: rtl;"> هل ترید حذف هذا الصوره ؟</p>
+                                <div>
+                                    <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                    <a class="btn btn-primary rounded-pill m-1" onclick="galleryCancelDeletion('{{ model.pk  }}')">لغو</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </span>
+            {% endif %}
+            {% endif %}
+
+                <div class="link">
+                    <div class="gallery">
+                        <div class="image-box">
+                            <img src="{{ model.image.url }}" alt="image" />
+                        </div>
+                        <div class="caption">
+                            <p style="color: black;">{{ model.caption }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        {% endif %}
+
+        <!-- end gallery -->
+
+        <!-- faq_user section -->
+
+        {% if model|get_model_name == "FAQUser" %}
+
+            {% if user.is_authenticated %}
+            {% if user.email == page_owner_email %}
+            <span class="span-m" style="margin-bottom: -1.5rem;">
+                <a class="icon-m" href="{% url 'panel:faq_user_edit' link_name=link_name.name  pk=model.pk %}" title="تحرير" target="_blank">
+                    <i class="mai-pencil"></i>
+                </a>
+
+                <a class="icon-m" href="#" style="color: red;" title="حذف" onclick="faqShowConfirm('{{ model.pk }}')">
+                    <i class="mai-trash"></i>
+                </a>
+                <div class="mask" id="faq_{{ model.pk }}" style="display: none;">
+                    <div class="base-form">
+                        <form class="form-add flex-row-reverse justify-content-between" method="post" action="{% url 'panel:faq_user_delete' link_name=link_name.name  pk=model.pk %}">
+                            {% csrf_token %}
+                            <p class="text-xl m-0" style="direction: rtl;"> هل ترید حذف هذا السوال ؟</p>
+                            <div>
+                                <button type="submit" class="btn btn-danger rounded-pill m-1">حذف</button>
+                                <a class="btn btn-primary rounded-pill m-1" onclick="faqCancelDeletion('{{ model.pk  }}')">لغو</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </span>
+            {% endif %}
+            {% endif %}
+
+            <div class="link-block" style="background-color: {{ model.link_id.template.url_block }}" id="question">
+                <div class="link p-1">
+                    <div class="faq">
+                        <div class="question">
+                            <i class="mai-chevron-down" style="cursor: pointer;"
+                                onclick="showAnswer('{{ model.id }}')"></i>
+                            <span>{{ model.question }}</span>
+                        </div>
+                        <div class="answer" style="display: none;" id="answer_{{ model.id }}">
+                            <span>{{ model.answer }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- end faq_user -->
+        
+    {% endfor %}
+        
+        </div>
+    </div>
+
+
+
+
+    <script src="{% static 'web/js/jquery-3.5.1.min.js' %}"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script src="{% static 'web/js/bootstrap.bundle.min.js' %}"></script>
+
+    <script src="{% static 'web/vendor/wow/wow.min.js' %}"></script>
+
+    <script src="{% static 'web/vendor/owl-carousel/js/owl.carousel.min.js' %}"></script>
+
+    <script src="{% static 'web/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
+
+    <script src="{% static 'web/vendor/animateNumber/jquery.animateNumber.min.js' %}"></script>
+
+    <script src="{% static 'web/js/google-maps.js' %}"></script>
+
+    <script src="{% static 'web/js/theme.js' %}"></script>
+
+    <script src="{% static 'web/js/panel.js' %}"></script>
+
+
+</body>
+
+</html>
